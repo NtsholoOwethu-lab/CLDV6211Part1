@@ -15,7 +15,7 @@ namespace EventEase.Models
 
         public DbSet<Bookings> Bookings { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -25,6 +25,6 @@ namespace EventEase.Models
                 .WithOne()  // Assuming EventDetails has a one-to-one relationship with Bookings
                 .HasForeignKey<Bookings>(b => b.EventId)  // Foreign key in the Bookings table
                 .HasConstraintName("FK_Bookings_EventDetails"); // Optional: name for the constraint
-        }
+        }*/
     }
 }

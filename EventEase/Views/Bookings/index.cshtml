@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<EventEase.Models.Bookings>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bookings";
 }
 
-<h1>Index</h1>
+<h1>index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Venue)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventId)
+                @Html.DisplayNameFor(model => model.EventDetails)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BookingDate)
@@ -28,18 +28,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Venue.VenueId)
+                @Html.DisplayFor(modelItem => item.Venue.VenueName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EventId)
+                @Html.DisplayFor(modelItem => item.EventDetails.EventName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
             </td>
+                
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookingId">Delete</a>
+                
             </td>
         </tr>
 }

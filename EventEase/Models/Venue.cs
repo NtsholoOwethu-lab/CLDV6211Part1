@@ -1,19 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventEase.Models
 {
-    public class Venue
+    [Table("Venue")]
+    public partial class Venue
     {
         [Key]
         public int VenueId { get; set; }
 
-        public string VenueName { get; set; }
+        [Required]
+        [StringLength(250)]
+        public string? VenueName { get; set; }
 
-        public string Location { get; set; }
+        [Required]
+        [StringLength(250)]
+        public string? Location { get; set; }
 
         public int Capacity { get; set; }
 
-        public string ImageUrl {  get; set; }
+        [Required]
+        [StringLength(250)]
+        public string? ImageUrl {  get; set; }
 
         public List<Bookings> Bookings { get; set; } = new();
     }
