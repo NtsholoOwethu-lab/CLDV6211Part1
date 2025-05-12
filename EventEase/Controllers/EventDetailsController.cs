@@ -27,51 +27,68 @@ namespace EventEase.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(EventDetails eventDetails)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(EventDetails @eventDetails)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(eventDetails);
+                _context.Add(@eventDetails);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Event created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Venue"] = _context.Venue.ToList();
 
-            return View(eventDetails);
+            return View(@eventDetails);
         }
         public async Task<IActionResult> Details(int? id) // if error check here - id / eventid
         {
-            var eventdetails = await _context.EventDetails.FirstOrDefaultAsync(x => x.EventId == id);
+            if (id == null) return NotFound();
 
-            if (eventdetails == null)
-            {
-                return NotFound();
-            }
-            return View(eventdetails);
+            var @event = await _context.EventDetails
+                .Include(e => e.Venue)
+                .FirstOrDefaultAsync(v => v.EventId == id);
+            if (@event == null) return NotFound();
+
+            return View(@event);
         }
 
+        //STEP 1: DELETION
         public async Task<IActionResult> Delete(int? id)
         {
-            var eventdetails = await _context.EventDetails.FirstOrDefaultAsync(x => x.EventId == id);
+            if (id == null) return NotFound();
 
-            if (eventdetails == null)
-            {
-                return NotFound();
-            }
-            return View();
+            var @event = await _context.EventDetails
+                .Include(e => e.Venue)
+                .FirstOrDefaultAsync(v => v.VenueId == id);
+            if (@event == null) return NotFound();
 
-
+            return View(@event);
         }
-        [HttpPost]
+        //STEP 2 DELETION PERFORMED
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.EventDetails.FindAsync(id);
-            _context.EventDetails.Remove(company);
+            var @event = await _context.EventDetails.FindAsync(id);
+            if (@event == null) return NotFound();
+
+            var isBooked = await _context.Bookings.AnyAsync(b => b.EventId == id);
+            if (isBooked)
+            {
+                TempData["ErrorMessage"] = "Cannot delete event because it has existing bookings.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.EventDetails.Remove(@event);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Event deleted successfully.";
             return RedirectToAction(nameof(Index));
+
         }
 
-        //edit
+        //edit(needed)
         private bool CompanyExists(int id)
         {
             return _context.EventDetails.Any(e => e.EventId == id);
@@ -84,18 +101,21 @@ namespace EventEase.Controllers
                 return NotFound();
             }
 
-            var eventdetails = await _context.EventDetails.FindAsync(id);
+            var @eventdetails = await _context.EventDetails.FindAsync(id);
             if (id == null)
             {
                 return NotFound();
             }
-            return View(eventdetails);
+            ViewData["Venue"] = _context.Venue.ToList();
+            return View(@eventdetails);
         }
+        //Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
 
         public async Task<IActionResult> Edit(int id, EventDetails eventdetails)
         {
-            if (id != eventdetails.EventId)
+            if (id != @eventdetails.EventId)
             {
                 return NotFound();
             }
@@ -104,8 +124,9 @@ namespace EventEase.Controllers
             {
                 try
                 {
-                    _context.Update(eventdetails);
+                    _context.Update(@eventdetails);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Event updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -120,7 +141,7 @@ namespace EventEase.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(eventdetails);
+            return View(@eventdetails);
         }
 
     }

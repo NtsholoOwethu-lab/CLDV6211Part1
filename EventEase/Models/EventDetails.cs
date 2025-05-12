@@ -19,7 +19,7 @@ namespace EventEase.Models
         public string Descripion { get; set; }
 
         
-        [Required]
+        
         public int VenueId { get; set; }
 
         public Venue? Venue { get; set; } 

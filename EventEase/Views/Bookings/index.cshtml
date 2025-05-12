@@ -6,40 +6,57 @@
 
 <h1>index</h1>
 
+<!--Add search form here-->
+<form asp-action="index" method="get">
+    <div class="form-group">
+        <input type="text" name="searchString" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+<!--Show Sucess Messages-->
+@if(TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]  
+    </div>
+}
+
+<!--Show Error Messages (ModelState Errors)-->
+
+@if(!ViewData.ModelState.IsValid)
+{
+    foreach(var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <div class="alert alert-danger">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Venue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventDetails)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingDate)
-            </th>
-            <th></th>
+            <th>BookingId</th>
+            <th>Venue</th>
+            <th>Event</th>
+            <th>Booking Dates</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var bookings in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Venue.VenueName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDetails.EventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookingDate)
-            </td>
+                <td>@bookings.BookingId</td> <!--shows error remove booking ID-->
+                <td> @bookings.Venue?.VenueName</td>
+                <td> @bookings.EventDetails?.EventName</td>
+                <td>@bookings.BookingDate.ToString("yyyy-MM-dd")</td>   
                 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@bookings.BookingId">Edit</a> |
+                <a asp-action="Details" asp-route-id=".BookingId">Details</a> |
                 
             </td>
         </tr>
