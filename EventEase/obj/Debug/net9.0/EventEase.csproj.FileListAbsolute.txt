@@ -683,3 +683,6 @@ C:\Users\lab_services_student\Desktop\part-1-poe-NtsholoOwethu-lab\EventEase\obj
 C:\Users\lab_services_student\Desktop\part-1-poe-NtsholoOwethu-lab\EventEase\bin\Debug\net9.0\Azure.Storage.Blobs.dll
 C:\Users\lab_services_student\Desktop\part-1-poe-NtsholoOwethu-lab\EventEase\bin\Debug\net9.0\Azure.Storage.Common.dll
 C:\Users\lab_services_student\Desktop\part-1-poe-NtsholoOwethu-lab\EventEase\bin\Debug\net9.0\System.IO.Hashing.dll
+C:\Users\lab_services_student\Desktop\CLDV6211Part1\EventEase\bin\Debug\net9.0\Azure.Storage.Blobs.dll
+C:\Users\lab_services_student\Desktop\CLDV6211Part1\EventEase\bin\Debug\net9.0\Azure.Storage.Common.dll
+C:\Users\lab_services_student\Desktop\CLDV6211Part1\EventEase\bin\Debug\net9.0\System.IO.Hashing.dll
